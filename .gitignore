@@ -1,0 +1,41 @@
+# ---------- Python ----------
+__pycache__/
+*.py[oc]
+*.pyo
+*.pyd
+
+# Build
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual envs
+.venv/
+.uv/
+.python-version
+
+# Logs
+*.log
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+
+# ---------- Env ----------
+.env
+.env.*
+
+# ---------- Node / React ----------
+node_modules/
+dist/
+build/
+.cache/
+
+# ---------- IDE ----------
+.vscode/
+
+# ---------- OS ----------
+.DS_Store
+Thumbs.db
