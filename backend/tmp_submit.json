@@ -1,0 +1,10 @@
+{
+  "quiz_id": "quiz_e9cb94d76c",
+  "user_id": "curl-user-2",
+  "difficulty": "beginner",
+  "answers": [
+    {"question_id": "q1", "answer": "To modify or enhance the behavior of a function without changing its code"},
+    {"question_id": "q2", "answer": "@"},
+    {"question_id": "q3", "answer": "Immediately above the function definition"}
+  ]
+}

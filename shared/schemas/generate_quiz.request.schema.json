@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "generate_quiz.request.schema.json",
+  "title": "GenerateQuizRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["input_type", "difficulty"],
+  "properties": {
+    "quiz_id": {
+      "type": "string",
+      "minLength": 3
+    },
+    "input_type": {
+      "type": "string",
+      "enum": ["topic", "document"]
+    },
+    "topic": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 200
+    },
+    "document_text": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 20000
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": ["beginner", "intermediate", "advanced"]
+    },
+    "question_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20,
+      "default": 5
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "input_type": {
+            "const": "topic"
+          }
+        }
+      },
+      "then": {
+        "required": ["topic"]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "input_type": {
+            "const": "document"
+          }
+        }
+      },
+      "then": {
+        "required": ["document_text"]
+      }
+    }
+  ]
+}

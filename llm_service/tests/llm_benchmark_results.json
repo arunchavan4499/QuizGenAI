@@ -1,0 +1,68 @@
+{
+  "groq": {
+    "explanation": {
+      "latency_sec": 1.601440668106079,
+      "finish_reason": "stop",
+      "score": {
+        "score": 8,
+        "notes": [
+          "overview brief"
+        ]
+      },
+      "sample": "```json\n{\n  \"overview\": \"A Linked List is a linear data structure where each element is a separate object, known as a node. Each node contains two items: the data and a reference (or link) to the next node in the sequence. This structure allows for efficient insertion or removal of elements from any position in the sequence.\",\n  \"key_points\": [\n    \"Each node in the Linked List contains a value (data) and a reference (next) to the next node.\",\n    \"The first node is called the head, and the last"
+    },
+    "quiz": {
+      "latency_sec": 2.747786521911621,
+      "finish_reason": "stop",
+      "score": {
+        "score": 9,
+        "notes": []
+      },
+      "sample": "{\"result\":[{\"role\":\"llm\",\"content\":{\n\"beginner\":[\n{\"question\":\"What is a linked list?\", \"options\":[\"A data structure with a fixed size\", \"A data structure where elements are stored in contiguous memory locations\", \"A dynamic collection of elements, where each element points to the next element\", \"A data structure with a tree-like structure\"], \"correct\":\"3\"},\n{\"question\":\"Which of the following is a characteristic of a linked list?\", \"options\":[\"Elements are stored in contiguous memory locations\""
+    },
+    "rag": {
+      "latency_sec": 3.318068265914917,
+      "finish_reason": "stop",
+      "score": {
+        "score": 0,
+        "notes": [
+          "Not valid JSON"
+        ]
+      },
+      "sample": "```json\n{\n  \"explanation\": {\n    \"overview\": \"Linked lists are a type of data structure where each node stores data and pointers to other nodes. There are two main types of linked lists: singly linked lists, where each node stores a next pointer, and doubly linked lists, where each node stores both prev and next pointers.\",\n    \"key_points\": [\n      \"Insertion at the head of a linked list can be done in constant time (O(1))\",\n      \"Random access in a linked list is O(n) because each node must b"
+    }
+  },
+  "qwen": {
+    "explanation": {
+      "latency_sec": 5.3394176959991455,
+      "finish_reason": "stop",
+      "score": {
+        "score": 8,
+        "notes": [
+          "overview brief"
+        ]
+      },
+      "sample": "{\n  \"overview\": \"A linked list is a linear data structure where elements, called nodes, are stored non-contiguously in memory. Unlike arrays, each node contains both the data and a reference (pointer) to the next node in the sequence, allowing for efficient insertions and deletions without shifting elements.\",\n  \"key_points\": [\n    \"Nodes consist of two parts: the data payload and a pointer to the next node.\",\n    \"Memory is allocated dynamically, meaning nodes can be scattered across memory rat"
+    },
+    "quiz": {
+      "latency_sec": 37.945019006729126,
+      "finish_reason": "stop",
+      "score": {
+        "score": 9,
+        "notes": []
+      },
+      "sample": "{\n  \"result\": [\n    {\n      \"role\": \"llm\",\n      \"content\": {\n        \"beginner\": [\n          {\n            \"question\": \"What is the primary characteristic of a node in a singly linked list?\",\n            \"options\": [\n              \"It contains data and a pointer to the next node.\",\n              \"It contains data and pointers to both next and previous nodes.\",\n              \"It stores data in contiguous memory locations.\",\n              \"It contains only data without any pointers.\"\n            "
+    },
+    "rag": {
+      "latency_sec": 42.87045502662659,
+      "finish_reason": "stop",
+      "score": {
+        "score": 12,
+        "notes": [
+          "Grounding terms matched: 5/5"
+        ]
+      },
+      "sample": "{\n  \"explanation\": {\n    \"overview\": \"Linked lists are linear data structures where elements, known as nodes, are linked using pointers. Unlike arrays, they do not support efficient random access but excel in dynamic memory allocation and insertion/deletion operations at specific points.\",\n    \"key_points\": [\n      \"Singly linked list nodes contain data and a single pointer to the next node.\",\n      \"Doubly linked list nodes contain data, a pointer to the previous node, and a pointer to the next"
+    }
+  }
+}
