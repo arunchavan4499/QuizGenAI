@@ -3,6 +3,6 @@ from prompts.explain_prompt import explain_prompt
 
 llm = LLMProvider()
 
-def run_explain_chain(context, question):
+def run_explain_chain(context, question, task="explain"):
     messages = explain_prompt(context, question)
-    return llm.generate(messages, task="explain")
+    return llm.generate(messages, task=task)

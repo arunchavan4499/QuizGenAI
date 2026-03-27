@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Friend Chatbot</title>
+  <style>
+    /* Global Styles */
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background: #f0ffef; /* Light green background */
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      min-height: 100vh; /* Ensure it takes full viewport height */
+      margin: 0;
+    }
+
+    /* Chat Container */
+    #chat { 
+      width: 400px; 
+      height: 550px; /* Fixed height for the whole chat box */
+      background: white; 
+      padding: 20px; 
+      border-radius: 12px; 
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column; /* Stack messages and input vertically */
+    }
+
+    /* Message Display Area */
+    #messages {
+      flex-grow: 1; /* Takes up all available vertical space */
+      overflow-y: auto; /* Enables vertical scrolling */
+      padding-right: 10px; /* Space for a cleaner scrollbar look */
+      margin-bottom: 15px;
+    }
+
+    /* Message Styling */
+    .msg { 
+      margin: 10px 0; 
+      padding: 10px; 
+      border-radius: 15px; 
+      max-width: 85%; /* Don't let messages take up the full width */
+    }
+    
+    .user { 
+      margin-left: auto; /* Pushes the user message to the right */
+      text-align: right; 
+      background-color: #007bff; /* Bright blue for user */
+      color: white; 
+      border-bottom-right-radius: 3px; /* Sharp corner for user */
+    }
+    
+    .bot { 
+      margin-right: auto; /* Keeps the bot message on the left */
+      text-align: left; 
+      background-color: #e6e6e6; /* Light gray for bot */
+      color: #333; 
+      border-bottom-left-radius: 3px; /* Sharp corner for bot */
+    }
+
+    /* Input and Button Container (to keep them together) */
+    .input-area {
+      display: flex;
+      gap: 10px; /* Space between input and button */
+    }
+
+    /* Input Field */
+    #msg { 
+      flex-grow: 1; /* Input takes up available space */
+      padding: 10px; 
+      border: 1px solid #ccc; 
+      border-radius: 20px; 
+    }
+
+    /* Send Button */
+    button { 
+      padding: 10px 15px; 
+      border: none;
+      border-radius: 20px;
+      background-color: #28a745; /* Green color */
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <div id="chat">
+    <div id="messages"></div>
+    <div class="input-area">
+      <input id="msg" placeholder="Say something..." onkeydown="if (event.key === 'Enter') sendMessage()" />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const messagesDiv = document.getElementById("messages");
+    const msgInput = document.getElementById("msg");
+
+    // Helper function to handle scrolling
+    function scrollToBottom() {
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    async function sendMessage() {
+      let msg = msgInput.value.trim();
+      if (!msg) return;
+
+      // 1. Display User Message and Clear Input
+      messagesDiv.innerHTML += `<div class="msg user">You: ${msg}</div>`;
+      msgInput.value = "";
+      scrollToBottom(); // Scroll after adding user message
+
+      try {
+        // 2. Fetch Reply from Flask Backend
+        let res = await fetch("http://127.0.0.1:5000/chat", {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify({message: msg})
+        });
+
+        // Check if the request was successful
+        if (!res.ok) {
+            // If the server returns an error, display it
+            throw new Error(`HTTP error! Status: ${res.status}`);
+        }
+
+        let data = await res.json();
+        
+        // 3. Display Bot Reply
+        messagesDiv.innerHTML += `<div class="msg bot">Friend: ${data.reply}</div>`;
+        scrollToBottom(); // Scroll after adding bot message
+
+      } catch (error) {
+        // Display any connection or API errors to the user
+        messagesDiv.innerHTML += `<div class="msg bot" style="background-color: #ffdddd; color: red;">⚠️ Connection Error: ${error.message}</div>`;
+        scrollToBottom();
+      }
+    }
+  </script>
+</body>
+</html>

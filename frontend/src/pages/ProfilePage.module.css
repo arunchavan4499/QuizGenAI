@@ -1,0 +1,811 @@
+.page {
+  min-height: 100vh;
+  background: #f5f3ff;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #1f2937;
+}
+
+.shell {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: none;
+  border: none;
+  background: #ffffff;
+}
+
+.sidebar {
+  width: 220px;
+  min-width: 220px;
+  background: linear-gradient(180deg, #1a5c3a 0%, #185533 100%);
+  color: #ecfdf5;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 14px;
+}
+
+.logoBlock {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 28px;
+  padding: 8px;
+}
+
+.logoIcon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.logoTitle {
+  font-size: 31px;
+  margin: 0;
+}
+
+.logoSub {
+  margin: 2px 0 0;
+  font-size: 11px;
+  color: rgba(236, 253, 245, 0.84);
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ecfdf5;
+  padding: 10px 11px;
+  border-radius: 10px;
+  font-size: 26px;
+  font-weight: 600;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.navItem:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.navItemActive {
+  background: #2f7a56;
+}
+
+.navBottom {
+  margin-top: auto;
+}
+
+.main {
+  flex: 1;
+  margin-left: 200px;
+  background: #f5f3ff;
+  padding: 22px;
+}
+
+.header {
+  margin-bottom: 14px;
+}
+
+.title {
+  margin: 0;
+  font-size: 36px;
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin: 8px 0 0;
+  font-size: 18px;
+  color: #4b5563;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+}
+
+.userCard {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.userLeft {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  background: #1a5c3a;
+  border-radius: 50%;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.avatarImage {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #d1d5db;
+}
+
+.userName {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.userEmail {
+  margin: 5px 0 0;
+  font-size: 15px;
+  color: #4b5563;
+}
+
+.editBtn {
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  color: #374151;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 600;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.editActions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cancelBtn {
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #374151;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.profileInput {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+  color: #1f2937;
+  margin-bottom: 6px;
+  box-sizing: border-box;
+}
+
+.profileInput:last-child {
+  margin-bottom: 0;
+}
+
+.photoUpload {
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f766e;
+  cursor: pointer;
+}
+
+.photoRemoveBtn {
+  margin-top: 8px;
+  margin-left: 8px;
+  border: 1px solid #fecaca;
+  background: #fff1f2;
+  color: #b91c1c;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.photoRemoveBtn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.profileGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #475569;
+}
+
+.fieldFull {
+  grid-column: 1 / -1;
+}
+
+.profileTextarea {
+  resize: vertical;
+  min-height: 96px;
+}
+
+.profileInfoGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.infoLabel {
+  margin: 0;
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.infoValue {
+  margin: 4px 0 0;
+  font-size: 15px;
+  color: #1f2937;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.sectionCard {
+  margin-top: 14px;
+  padding: 14px;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.sectionSub {
+  margin: 4px 0 14px;
+  color: #4b5563;
+  font-size: 15px;
+}
+
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.statBox {
+  border-radius: 12px;
+  padding: 14px;
+  text-align: center;
+  border: 1px solid transparent;
+}
+
+.statValue {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.statLabel {
+  margin: 4px 0 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.statBlue {
+  background: #e8eef8;
+  color: #2563eb;
+}
+
+.statGreen {
+  background: #e7f5ec;
+  color: #16a34a;
+}
+
+.statOrange {
+  background: #fff2e6;
+  color: #d97706;
+}
+
+.progressTrendWrap {
+  margin-top: 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 12px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+}
+
+.progressTrendHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.progressTrendTitle {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.progressTrendMeta {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #0369a1;
+}
+
+.progressLineChartWrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+}
+
+.progressLineChart {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+.progressGuide {
+  stroke: #e2e8f0;
+  stroke-width: 1;
+}
+
+.progressTick {
+  fill: #64748b;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.progressPolyline {
+  fill: none;
+  stroke: #0ea5e9;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.progressDot {
+  fill: #ffffff;
+  stroke: #0284c7;
+  stroke-width: 2;
+}
+
+.progressXAxisLabel {
+  fill: #334155;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.progressLegendList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.progressLegendItem {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) 52px;
+  gap: 8px;
+  align-items: center;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 6px 8px;
+  background: #ffffff;
+}
+
+.progressLegendQuiz {
+  font-size: 12px;
+  font-weight: 800;
+  color: #1e293b;
+}
+
+.progressLegendTopic {
+  font-size: 12px;
+  color: #64748b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.progressLegendValue {
+  font-size: 12px;
+  font-weight: 800;
+  color: #166534;
+  text-align: right;
+}
+
+.progressTrendEmpty {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.tagsRow {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tag {
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.tagOrange {
+  background: #f97316;
+  color: #ffffff;
+}
+
+.tagOutline {
+  color: #64748b;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+}
+
+.tagGreen {
+  background: #1a5c3a;
+  color: #ffffff;
+}
+
+.quizCard {
+  margin-top: 14px;
+  padding: 14px;
+}
+
+.quizList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.quizHead {
+  margin-top: 10px;
+  margin-bottom: 8px;
+  padding: 0 12px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 110px 120px 90px;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.quizHeadItem {
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.quizHeadItem:nth-child(2) {
+  justify-self: center;
+}
+
+.quizHeadItem:nth-child(3) {
+  justify-self: end;
+}
+
+.quizHeadItem:nth-child(4) {
+  justify-self: end;
+}
+
+.quizRow {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #ffffff;
+  padding: 10px 12px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 110px 120px 90px;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.quizTopic {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.quizDate {
+  margin: 4px 0 0;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.quizScore {
+  color: #16a34a;
+  font-weight: 800;
+  font-size: 16px;
+  margin: 0;
+  justify-self: center;
+  white-space: nowrap;
+}
+
+.quizTime {
+  color: #4b5563;
+  font-size: 13px;
+  margin: 0;
+  justify-self: end;
+  white-space: nowrap;
+}
+
+.quizReviewBtn {
+  justify-self: end;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #0f766e;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.viewAll {
+  margin-top: 12px;
+  text-align: center;
+}
+
+.viewAllLink {
+  color: #0f766e;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.viewAllBtn {
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #0f766e;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.reviewModalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.reviewModal {
+  width: min(760px, 100%);
+  max-height: 86vh;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.2);
+}
+
+.reviewModalHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.reviewModalHead h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.reviewModalClose {
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.reviewModalBody {
+  max-height: calc(86vh - 56px);
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.reviewTopic {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #475569;
+}
+
+.reviewCard {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 12px;
+  background: #f8fafc;
+}
+
+.reviewQuestion {
+  margin: 0;
+  font-weight: 700;
+  font-size: 15px;
+  color: #1f2937;
+}
+
+.reviewLine {
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: #334155;
+}
+
+.reviewStatus {
+  margin-top: 8px;
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.reviewStatusCorrect {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.reviewStatusIncorrect {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.bottomBar {
+  margin-top: 12px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.reviewText {
+  border: none;
+  background: transparent;
+  color: #4b5563;
+  text-decoration: underline;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.reviewBtn {
+  background: #1a5c3a;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .page {
+    padding: 0;
+  }
+
+  .shell {
+    min-height: auto;
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    min-width: 100%;
+    border-radius: 0;
+  }
+
+  .statsRow {
+    grid-template-columns: 1fr;
+  }
+
+  .progressTrendHead {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .progressLegendItem {
+    grid-template-columns: 64px minmax(0, 1fr) 52px;
+  }
+
+  .profileGrid,
+  .profileInfoGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .main {
+    margin-left: 0;
+  }
+
+  .title {
+    font-size: 30px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+
+  .userName {
+    font-size: 24px;
+  }
+
+  .sectionTitle {
+    font-size: 21px;
+  }
+
+  .quizRow {
+    grid-template-columns: 1fr;
+    row-gap: 6px;
+  }
+
+  .quizHead {
+    display: none;
+  }
+}

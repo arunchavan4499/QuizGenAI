@@ -26,10 +26,14 @@ def test_register_login_and_me_flow() -> None:
     assert "id" in user_data
 
     login_payload = {
-        "email": email,
+        "username": email,
         "password": password,
     }
-    login_response = client.post("/auth/login", json=login_payload)
+    login_response = client.post(
+        "/auth/login",
+        data=login_payload,
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+    )
     assert login_response.status_code == 200
 
     token_data = login_response.json()
@@ -82,7 +86,11 @@ def test_logout_revokes_token() -> None:
     )
     assert register_response.status_code == 201
 
-    login_response = client.post("/auth/login", json={"email": email, "password": password})
+    login_response = client.post(
+        "/auth/login",
+        data={"username": email, "password": password},
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+    )
     assert login_response.status_code == 200
     token = login_response.json()["access_token"]
 

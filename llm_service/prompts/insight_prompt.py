@@ -29,6 +29,7 @@ Requirements:
 - score: Percentage (0-100) based on correct answers
 - strengths: Be specific about what the student did well
 - weaknesses: Be constructive and specific about areas needing improvement
-- recommendations: Provide actionable, specific advice"""
+- recommendations: Provide actionable, specific advice
+- Text style: plain text only. Do NOT use markdown formatting like **bold**, *italic*, __underline__, backticks, headings, or bullet symbols inside strings."""
         }
     ]

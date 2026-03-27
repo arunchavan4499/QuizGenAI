@@ -4,8 +4,8 @@ from sqlalchemy import func, select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
-from app.core.config import use_db_leaderboard
-from app.models.schemas import DifficultyLevel, LeaderboardEntry, LeaderboardResponse
+from app.config import use_db_leaderboard
+from app.schemas import DifficultyLevel, LeaderboardEntry, LeaderboardResponse
 from db.database import SessionLocal
 from db.models import QuizAdvanced, QuizBeginner, QuizIntermediate, User
 
@@ -27,24 +27,32 @@ def _quiz_model_for_difficulty(difficulty: DifficultyLevel):
     return QuizAdvanced
 
 
-def record_score(user_id: str, difficulty: DifficultyLevel, score: float) -> None:
+def _parse_numeric_user_id(raw_user_id: str) -> int:
+    try:
+        return int(raw_user_id)
+    except (TypeError, ValueError):
+        return 0
+
+
+def record_score(user_id: int, difficulty: DifficultyLevel, score: float) -> None:
     if use_db_leaderboard():
         model = _quiz_model_for_difficulty(difficulty)
         session = SessionLocal()
         try:
-            user_exists = session.execute(select(User.id).where(User.id == user_id)).scalar_one_or_none()
+            db_user_id = str(user_id)
+            user_exists = session.execute(select(User.id).where(User.id == db_user_id)).scalar_one_or_none()
             if user_exists is None:
                 session.add(
                     User(
-                        id=user_id,
-                        name=user_id,
+                        id=db_user_id,
+                        name=str(user_id),
                         email=f"{user_id}@placeholder.local",
                         password_hash="argon2_placeholder",
                     )
                 )
                 session.flush()
 
-            session.add(model(user_id=user_id, marks=score, total_marks=100, time_taken_seconds=0))
+            session.add(model(user_id=db_user_id, marks=score, total_marks=100, time_taken_seconds=0))
             session.commit()
             return
         except SQLAlchemyError:
@@ -63,7 +71,7 @@ def get_leaderboard(difficulty: DifficultyLevel, limit: int = 10) -> Leaderboard
             rows = session.execute(
                 select(model.user_id, model.marks).order_by(model.marks.desc()).limit(limit)
             ).all()
-            entries = [LeaderboardEntry(user_id=row.user_id, score=float(row.marks)) for row in rows]
+            entries = [LeaderboardEntry(user_id=_parse_numeric_user_id(row.user_id), score=float(row.marks)) for row in rows]
             return LeaderboardResponse(
                 difficulty=difficulty.value,
                 entries=entries,
@@ -83,14 +91,14 @@ def get_leaderboard(difficulty: DifficultyLevel, limit: int = 10) -> Leaderboard
     )
 
 
-def _section_percentages(session: Session, model) -> dict[str, float]:
+def _section_percentages(session: Session, model) -> dict[int, float]:
     rows = session.execute(
         select(
             model.user_id,
             (func.max(model.marks) / func.max(model.total_marks) * 100.0).label("pct"),
         ).group_by(model.user_id)
     ).all()
-    return {row.user_id: float(row.pct or 0.0) for row in rows}
+    return {_parse_numeric_user_id(row.user_id): float(row.pct or 0.0) for row in rows}
 
 
 def get_overall_leaderboard(limit: int = 10) -> LeaderboardResponse:

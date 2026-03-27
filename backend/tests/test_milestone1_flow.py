@@ -18,7 +18,11 @@ def _create_auth_headers(email_prefix: str = "quizflow") -> dict[str, str]:
     reg = client.post("/auth/register", json=payload)
     assert reg.status_code == 201
 
-    login = client.post("/auth/login", json={"email": payload["email"], "password": payload["password"]})
+    login = client.post(
+        "/auth/login",
+        data={"username": payload["email"], "password": payload["password"]},
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+    )
     assert login.status_code == 200
     token = login.json()["access_token"]
     return {"Authorization": f"Bearer {token}"}
@@ -39,6 +43,14 @@ def _mock_quiz_chain(source_input: str, difficulty: str, question_count: int = 5
     return questions
 
 
+def _mock_full_quiz_chain(source_input: str, question_count: int = 5, use_context: bool = False):
+    return {
+        "beginner": _mock_quiz_chain(source_input, "beginner", question_count, use_context),
+        "intermediate": _mock_quiz_chain(source_input, "intermediate", question_count, use_context),
+        "advanced": _mock_quiz_chain(source_input, "advanced", question_count, use_context),
+    }
+
+
 def _mock_insight_chain(quiz_data: str, user_answers: str):
     return {
         "score": 85.0,
@@ -50,6 +62,10 @@ def _mock_insight_chain(quiz_data: str, user_answers: str):
     }
 
 
+def _mock_explain_chain(context: str, question: str):
+    return f"Explanation for: {question} (context: {context[:40]})"
+
+
 def _mock_build_context_for_quiz(document_id: str, text: str, query: str, k: int = 4):
     return f"context::{document_id}::{query}::{k}::{len(text)}"
 
@@ -57,8 +73,28 @@ def _mock_build_context_for_quiz(document_id: str, text: str, query: str, k: int
 def setup_module() -> None:
     quiz_service.llm_chains_available = True
     quiz_service.run_quiz_chain = _mock_quiz_chain
+    quiz_service.run_full_quiz_chain = _mock_full_quiz_chain
+    quiz_service.run_explain_chain = _mock_explain_chain
     quiz_service.run_insight_chain = _mock_insight_chain
     quiz_service.build_context_for_quiz = _mock_build_context_for_quiz
+
+
+def test_explain_endpoint_before_generate() -> None:
+    headers = _create_auth_headers("explainflow")
+
+    payload = {
+        "input_type": "topic",
+        "topic": "Linked lists",
+        "question": "Explain linked lists to a beginner",
+    }
+
+    response = client.post("/quiz/explain", json=payload, headers=headers)
+    assert response.status_code == 200
+
+    data = response.json()
+    assert "explanation" in data
+    assert isinstance(data["explanation"], str)
+    assert len(data["explanation"]) > 0
 
 
 def test_topic_quiz_flow_and_leaderboard_update() -> None:
@@ -162,12 +198,12 @@ def test_document_path_uses_rag_context() -> None:
 
     captured = {"use_context": None, "source_input": None}
 
-    def capture_chain(source_input: str, difficulty: str, question_count: int = 5, use_context: bool = False):
+    def capture_full_chain(source_input: str, question_count: int = 5, use_context: bool = False):
         captured["use_context"] = use_context
         captured["source_input"] = source_input
-        return _mock_quiz_chain("RAG derived", difficulty, question_count)
+        return _mock_full_quiz_chain("RAG derived", question_count, use_context)
 
-    quiz_service.run_quiz_chain = capture_chain
+    quiz_service.run_full_quiz_chain = capture_full_chain
 
     payload = {
         "quiz_id": "quiz_rag_1",
@@ -185,7 +221,40 @@ def test_document_path_uses_rag_context() -> None:
     assert captured["source_input"].startswith("context::")
 
     # restore default mock chain for subsequent tests
-    quiz_service.run_quiz_chain = _mock_quiz_chain
+    quiz_service.run_full_quiz_chain = _mock_full_quiz_chain
+
+
+def test_final_insights_requires_all_three_sections() -> None:
+    headers = _create_auth_headers("incompleteflow")
+    shared_quiz_id = "quiz_incomplete_session_1"
+
+    generate_payload = {
+        "quiz_id": shared_quiz_id,
+        "input_type": "topic",
+        "topic": "Python decorators",
+        "difficulty": "beginner",
+        "question_count": 2,
+    }
+    generate_response = client.post("/quiz/generate", json=generate_payload, headers=headers)
+    assert generate_response.status_code == 200
+    quiz_data = generate_response.json()
+
+    submit_payload = {
+        "quiz_id": quiz_data["quiz_id"],
+        "difficulty": "beginner",
+        "verification_token": quiz_data["verification_token"],
+        "answers": [
+            {"question_id": "q1", "answer": "Option A"},
+            {"question_id": "q2", "answer": "Option A"},
+        ],
+    }
+    submit_response = client.post("/quiz/submit", json=submit_payload, headers=headers)
+    assert submit_response.status_code == 200
+
+    final_payload = {"quiz_id": shared_quiz_id}
+    final_response = client.post("/quiz/insights/final", json=final_payload, headers=headers)
+    assert final_response.status_code == 502
+    assert "Quiz is incomplete" in final_response.json()["detail"]
 
 
 def test_quiz_endpoints_require_authentication() -> None:

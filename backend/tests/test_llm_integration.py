@@ -4,15 +4,36 @@ Tests both direct chain calls and through the FastAPI endpoints.
 """
 import json
 import sys
+import uuid
 from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app
-from app.models.schemas import InputType, DifficultyLevel, GenerateQuizRequest, SubmitAnswersRequest, AnswerItem
+from app.schemas import InputType, DifficultyLevel, GenerateQuizRequest, SubmitAnswersRequest, AnswerItem
 
 client = TestClient(app)
+
+
+def _create_auth_headers(email_prefix: str = "llmintegration") -> dict[str, str]:
+    payload = {
+        "name": "LLM Integration User",
+        "email": f"{email_prefix}_{uuid.uuid4().hex[:8]}@example.com",
+        "password": "StrongPass123",
+    }
+
+    reg = client.post("/auth/register", json=payload)
+    assert reg.status_code == 201
+
+    login = client.post(
+        "/auth/login",
+        data={"username": payload["email"], "password": payload["password"]},
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+    )
+    assert login.status_code == 200
+    token = login.json()["access_token"]
+    return {"Authorization": f"Bearer {token}"}
 
 # Try to import LLM chains for direct testing
 llm_chains_available = False
@@ -33,6 +54,7 @@ class TestLLMQuizIntegration:
     
     def test_generate_quiz_with_topic(self):
         """Test generating quiz from topic via API."""
+        headers = _create_auth_headers("topic")
         payload = {
             "input_type": "topic",
             "topic": "Python decorators",
@@ -40,7 +62,7 @@ class TestLLMQuizIntegration:
             "question_count": 3,
         }
         
-        response = client.post("/quiz/generate", json=payload)
+        response = client.post("/quiz/generate", json=payload, headers=headers)
         assert response.status_code == 200
         
         data = response.json()
@@ -56,6 +78,7 @@ class TestLLMQuizIntegration:
     
     def test_generate_quiz_with_document(self):
         """Test generating quiz from document text via API."""
+        headers = _create_auth_headers("document")
         payload = {
             "input_type": "document",
             "document_text": "The solar system consists of the Sun and all objects that orbit it. The planets are Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, and Neptune.",
@@ -63,7 +86,7 @@ class TestLLMQuizIntegration:
             "question_count": 2,
         }
         
-        response = client.post("/quiz/generate", json=payload)
+        response = client.post("/quiz/generate", json=payload, headers=headers)
         assert response.status_code == 200
         
         data = response.json()
@@ -90,6 +113,8 @@ class TestLLMInsightIntegration:
     
     def test_submit_answers_generates_insights(self):
         """Test answer submission generates insights via LLM."""
+        headers = _create_auth_headers("insight")
+
         # First generate a quiz
         generate_payload = {
             "input_type": "topic",
@@ -98,22 +123,22 @@ class TestLLMInsightIntegration:
             "question_count": 2,
         }
         
-        gen_response = client.post("/quiz/generate", json=generate_payload)
+        gen_response = client.post("/quiz/generate", json=generate_payload, headers=headers)
         assert gen_response.status_code == 200
         quiz_data = gen_response.json()
         
         # Submit answers
         submit_payload = {
             "quiz_id": quiz_data["quiz_id"],
-            "user_id": "test-user",
             "difficulty": "beginner",
+            "verification_token": quiz_data["verification_token"],
             "answers": [
                 {"question_id": "q1", "answer": "Option A"},
                 {"question_id": "q2", "answer": "Option B"},
             ],
         }
         
-        response = client.post("/quiz/submit", json=submit_payload)
+        response = client.post("/quiz/submit", json=submit_payload, headers=headers)
         assert response.status_code == 200
         
         data = response.json()
@@ -158,6 +183,8 @@ class TestEndToEndFlow:
     
     def test_complete_quiz_flow(self):
         """Test complete flow: generate -> submit -> leaderboard."""
+        headers = _create_auth_headers("e2e")
+
         # Step 1: Generate quiz
         generate_payload = {
             "input_type": "topic",
@@ -166,22 +193,22 @@ class TestEndToEndFlow:
             "question_count": 3,
         }
         
-        gen_response = client.post("/quiz/generate", json=generate_payload)
+        gen_response = client.post("/quiz/generate", json=generate_payload, headers=headers)
         assert gen_response.status_code == 200
         quiz_data = gen_response.json()
         
         # Step 2: Submit answers
         submit_payload = {
             "quiz_id": quiz_data["quiz_id"],
-            "user_id": "ml-student",
             "difficulty": "advanced",
+            "verification_token": quiz_data["verification_token"],
             "answers": [
                 {"question_id": q["question_id"], "answer": q["options"][0]}
                 for q in quiz_data["questions"]
             ],
         }
         
-        submit_response = client.post("/quiz/submit", json=submit_payload)
+        submit_response = client.post("/quiz/submit", json=submit_payload, headers=headers)
         assert submit_response.status_code == 200
         
         submit_data = submit_response.json()
@@ -189,11 +216,11 @@ class TestEndToEndFlow:
         assert "insights" in submit_data
         
         # Step 3: Check leaderboard
-        leaderboard_response = client.get("/leaderboard/advanced")
+        leaderboard_response = client.get("/leaderboard/advanced", headers=headers)
         assert leaderboard_response.status_code == 200
         
         leaderboard_data = leaderboard_response.json()
-        assert any(entry["user_id"] == "ml-student" for entry in leaderboard_data["entries"])
+        assert len(leaderboard_data["entries"]) >= 1
 
 
 if __name__ == "__main__":
