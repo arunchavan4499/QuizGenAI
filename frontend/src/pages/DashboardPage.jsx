@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import SharedSidebar from '../components/SharedSidebar'
 import { fetchLeaderboard } from '../services/backendApi'
+import { PenTool, FileText, UploadCloud, Sparkles, Trophy } from 'lucide-react'
 import './DashboardPage.css'
 
 function DashboardPage({ onNavigate = () => {}, userQuizPoints = 0, onAnalyze = async () => {}, authToken = '', currentUser = null }) {
@@ -121,7 +122,7 @@ function DashboardPage({ onNavigate = () => {}, userQuizPoints = 0, onAnalyze = 
           <div className="dashboard-inputs-grid">
             <section className="dashboard-card">
               <h3 className="dashboard-section-title">
-                <span className="dashboard-icon-circle">✏️</span>
+                <span className="dashboard-icon-circle"><PenTool size={18} /></span>
                 <span>1. Explain a Topic</span>
               </h3>
               <p className="dashboard-section-subtitle">
@@ -137,7 +138,7 @@ function DashboardPage({ onNavigate = () => {}, userQuizPoints = 0, onAnalyze = 
 
             <section className="dashboard-card">
               <h3 className="dashboard-section-title">
-                <span className="dashboard-icon-circle">📄</span>
+                <span className="dashboard-icon-circle"><FileText size={18} /></span>
                 <span>2. Upload a Document</span>
                 <span className="dashboard-section-title-inline">(RAG Powered)</span>
               </h3>
@@ -146,7 +147,7 @@ function DashboardPage({ onNavigate = () => {}, userQuizPoints = 0, onAnalyze = 
               </p>
 
               <label className="dashboard-upload-box">
-                <div className="dashboard-upload-icon">☁️</div>
+                <div className="dashboard-upload-icon"><UploadCloud size={40} /></div>
                 <p className="dashboard-upload-title">Click to Upload or Drag & Drop</p>
                 <p className="dashboard-upload-meta">Supports: PDF, TXT, MD, CSV, JSON, LOG (Max 20MB)</p>
                 <span className="dashboard-browse-btn">Browse Files</span>
@@ -188,7 +189,10 @@ function DashboardPage({ onNavigate = () => {}, userQuizPoints = 0, onAnalyze = 
 
           <section className="dashboard-bottom-grid">
             <article className="dashboard-card">
-              <h3 className="dashboard-step-title">✦ How It Works</h3>
+              <h3 className="dashboard-step-title">
+                <Sparkles size={26} style={{ marginRight: '8px', verticalAlign: 'middle', display: 'inline-block', color: '#7c3aed' }} />
+                <span>How It Works</span>
+              </h3>
               <ol className="dashboard-steps">
                 <li className="dashboard-step-item"><span className="dashboard-step-number">1</span>Provide a topic or upload a document</li>
                 <li className="dashboard-step-item"><span className="dashboard-step-number">2</span>AI (LLM + RAG) processes and understands</li>
@@ -202,7 +206,10 @@ function DashboardPage({ onNavigate = () => {}, userQuizPoints = 0, onAnalyze = 
             </article>
 
             <article className="dashboard-card">
-              <h3 className="dashboard-leaderboard-title">🏆 Leaderboard</h3>
+              <h3 className="dashboard-leaderboard-title">
+                <Trophy size={24} style={{ marginRight: '8px', verticalAlign: 'middle', display: 'inline-block', color: '#fbbf24' }} />
+                <span>Leaderboard</span>
+              </h3>
               <p className="dashboard-leaderboard-subtitle">Top 5 Performers This Week</p>
 
               <div className="dashboard-leaderboard-chart" role="img" aria-label="Top 3 leaderboard podium with first rank in center">

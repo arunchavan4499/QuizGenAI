@@ -278,6 +278,15 @@
   gap: 16px;
 }
 
+.home-grid > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-grid > div > .home-card {
+  flex-grow: 1;
+}
+
 .home-submission-full {
   margin-top: 16px;
   padding: 30px 28px;

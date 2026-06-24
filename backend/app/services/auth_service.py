@@ -31,21 +31,18 @@ def _build_token(user: User) -> tuple[str, datetime]:
 
 
 def _next_numeric_user_id(db: Session) -> int:
-    # Compatible with existing string IDs by using only purely numeric IDs.
-    current_max = db.execute(
-        text(
-            """
-            SELECT COALESCE(MAX(
-                CASE
-                    WHEN id::text ~ '^[0-9]+$' THEN id::text::int
-                    ELSE 0
-                END
-            ), 0)
-            FROM users
-            """
-        )
-    ).scalar_one()
-    return int(current_max) + 1
+    # Compatible with SQLite and PostgreSQL.
+    # Get the max numeric ID from existing users.
+    all_users = db.execute(select(User.id)).scalars().all()
+    max_numeric_id = 0
+    for user_id in all_users:
+        try:
+            numeric_id = int(user_id)
+            max_numeric_id = max(max_numeric_id, numeric_id)
+        except (ValueError, TypeError):
+            # Skip non-numeric IDs
+            pass
+    return max_numeric_id + 1
 
 
 def register_user(name: str, email: str, password: str, db: Session) -> AuthUserResponse:

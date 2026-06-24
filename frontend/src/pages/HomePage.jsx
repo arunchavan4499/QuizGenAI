@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import SharedSidebar from '../components/SharedSidebar'
 import { DEFAULT_SUBMISSION_STREAK, fetchSubmissionStreak } from '../services/submissionStreakService'
 import { fetchLeaderboard } from '../services/backendApi'
+import { Crown, Star, Zap, Share2, Play } from 'lucide-react'
 import './HomePage.css'
 
 const heroSlides = [
@@ -225,9 +226,7 @@ function HomePage({ onNavigate = () => {}, userQuizPoints = 0, authToken = '', c
                         aria-label={`View results for ${row.title}`}
                         onClick={() => onNavigate('results')}
                       >
-                        <svg viewBox="0 0 24 24" className="home-drive-action-icon" aria-hidden="true">
-                          <path d="M8 5v14l11-7z" />
-                        </svg>
+                        <Play className="home-drive-action-icon" fill="currentColor" size={16} />
                       </button>
                     </div>
                   </div>
@@ -288,7 +287,7 @@ function HomePage({ onNavigate = () => {}, userQuizPoints = 0, authToken = '', c
                         </div>
 
                         <div className="home-podium-item home-podium-first">
-                          <div className="home-crown">👑</div>
+                          <div className="home-crown" style={{ top: '-14px' }}><Crown size={20} fill="#fbbf24" style={{ color: '#d97706' }} /></div>
                           <div className="home-podium-circle">{podiumFirst ? podiumFirst.avatar : '-'}</div>
                           <span className="home-podium-rank">1</span>
                           <p className="home-podium-name">{podiumFirst ? podiumFirst.name : '-'}</p>
@@ -365,7 +364,7 @@ function HomePage({ onNavigate = () => {}, userQuizPoints = 0, authToken = '', c
           <article className="home-card home-submission-full">
             <div className="home-streak-head">
               <h3 className="home-streak-title">Submission Streak</h3>
-              <span className="home-share">↗</span>
+              <span className="home-share"><Share2 size={16} /></span>
             </div>
 
             <div className="home-contrib">
@@ -406,12 +405,18 @@ function HomePage({ onNavigate = () => {}, userQuizPoints = 0, authToken = '', c
           </article>
 
           <article className="home-card home-current-streak home-current-streak-full">
-            <h3>⭐ Current Streak</h3>
+            <h3 style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Star size={20} fill="#fbbf24" style={{ color: '#d97706' }} />
+              <span>Current Streak</span>
+            </h3>
             <p>Consistency is key: Start your streak by practicing for at least 10 minutes each day</p>
             <div className="home-day-badges">
               {submissionStreak.recentActiveDays.length > 0 ? (
                 submissionStreak.recentActiveDays.map((day) => (
-                  <span key={day} className="home-day-badge">⚡ Day {day}</span>
+                  <span key={day} className="home-day-badge">
+                    <Zap size={12} fill="#fbbf24" style={{ color: '#d97706', marginRight: '4px' }} />
+                    <span>Day {day}</span>
+                  </span>
                 ))
               ) : (
                 <span className="home-day-badge">Start today</span>

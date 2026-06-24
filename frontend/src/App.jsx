@@ -37,8 +37,16 @@ function App() {
     setActivePage('login')
   }
 
+  const handleLogin = (session) => {
+    setAuthSession(session)
+    setQuizUnlocked(false)
+    setQuizAttempts([])
+    setAnalysisData(null)
+    setActivePage('home')
+  }
+
   const handleNavigate = (nextPage) => {
-    if (nextPage === 'logout') {
+    if (nextPage === 'logout' || nextPage === 'login') {
       void handleLogout()
       return
     }
@@ -54,14 +62,6 @@ function App() {
     }
 
     setActivePage(nextPage)
-  }
-
-  const handleLogin = (session) => {
-    setAuthSession(session)
-    setQuizUnlocked(false)
-    setQuizAttempts([])
-    setAnalysisData(null)
-    setActivePage('home')
   }
 
   const handleGenerateQuiz = () => {

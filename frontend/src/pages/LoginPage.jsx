@@ -1,5 +1,6 @@
 import './LoginPage.css'
 import { useState } from 'react'
+import { Bot, User, Mail, Lock } from 'lucide-react'
 import { loginUser, registerUser } from '../services/backendApi'
 
 function LoginPage({ onLogin = () => {} }) {
@@ -75,7 +76,7 @@ function LoginPage({ onLogin = () => {} }) {
 
       <main className="login-content">
         <section className="login-brand">
-          <div className="login-brand-icon">🤖</div>
+          <div className="login-brand-icon" style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}><Bot size={58} /></div>
           <h1>QuizGen AI</h1>
           <p>Adaptive Quiz Generator for Courses</p>
         </section>
@@ -96,7 +97,7 @@ function LoginPage({ onLogin = () => {} }) {
             <>
               <label className="field-label" htmlFor="name">Full Name</label>
               <div className="inputForm">
-                <span className="field-icon">👤</span>
+                <span className="field-icon" style={{ display: 'inline-flex', alignItems: 'center' }}><User size={18} /></span>
                 <input
                   id="name"
                   type="text"
@@ -112,7 +113,7 @@ function LoginPage({ onLogin = () => {} }) {
 
           <label className="field-label" htmlFor="email">Email Address</label>
           <div className="inputForm">
-            <span className="field-icon">✉</span>
+            <span className="field-icon" style={{ display: 'inline-flex', alignItems: 'center' }}><Mail size={18} /></span>
             <input
               id="email"
               type="email"
@@ -142,7 +143,7 @@ function LoginPage({ onLogin = () => {} }) {
                 )}
               </div>
               <div className="inputForm">
-                <span className="field-icon">🔒</span>
+                <span className="field-icon" style={{ display: 'inline-flex', alignItems: 'center' }}><Lock size={18} /></span>
                 <input
                   id="password"
                   type="password"
@@ -160,7 +161,7 @@ function LoginPage({ onLogin = () => {} }) {
             <>
               <label className="field-label" htmlFor="confirmPassword">Confirm Password</label>
               <div className="inputForm">
-                <span className="field-icon">🔒</span>
+                <span className="field-icon" style={{ display: 'inline-flex', alignItems: 'center' }}><Lock size={18} /></span>
                 <input
                   id="confirmPassword"
                   type="password"

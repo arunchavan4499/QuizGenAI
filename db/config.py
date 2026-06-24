@@ -4,6 +4,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
+    db_type: str = "postgres"  # 'sqlite' or 'postgres'
+    db_path: str = "./quiz.db"  # For SQLite
     db_username: str = "postgres"
     db_password: str = "postgres"
     db_hostname: str = "localhost"
@@ -22,7 +24,11 @@ class Settings(BaseSettings):
 
 settings = Settings()
 
-db_url = (
-    f"postgresql+psycopg://{settings.db_username}:{settings.db_password}"
-    f"@{settings.db_hostname}:{settings.db_port}/{settings.db_name}"
-)
+# Build database URL based on configuration
+if settings.db_type == "sqlite":
+    db_url = f"sqlite:///{settings.db_path}"
+else:
+    db_url = (
+        f"postgresql+psycopg://{settings.db_username}:{settings.db_password}"
+        f"@{settings.db_hostname}:{settings.db_port}/{settings.db_name}"
+    )

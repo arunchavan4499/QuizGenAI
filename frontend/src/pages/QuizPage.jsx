@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Clock, Search } from 'lucide-react'
 import SharedSidebar from '../components/SharedSidebar'
 import {
   fetchFinalInsights,
@@ -455,7 +456,10 @@ function QuizPage({ onNavigate = () => {}, onQuizComplete = () => {}, analysisDa
                 <h2 className="quiz-title">{completedSection} Section Complete</h2>
                 <p className="quiz-subtitle">Top 5 and your current rank for {completedSection}</p>
               </div>
-              <div className="quiz-timer">🕐 {timerText}</div>
+              <div className="quiz-timer" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <Clock size={16} />
+                <span>{timerText}</span>
+              </div>
             </div>
 
             <article className="quiz-section-board">
@@ -497,7 +501,10 @@ function QuizPage({ onNavigate = () => {}, onQuizComplete = () => {}, analysisDa
                 <h2 className="quiz-title">Quiz</h2>
                 <p className="quiz-subtitle">Answer the following question</p>
               </div>
-              <div className="quiz-timer">🕐 {timerText}</div>
+              <div className="quiz-timer" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <Clock size={16} />
+                <span>{timerText}</span>
+              </div>
             </div>
 
             {error ? <p className="quiz-footer" style={{ color: '#b91c1c' }}>{error}</p> : null}
@@ -507,7 +514,10 @@ function QuizPage({ onNavigate = () => {}, onQuizComplete = () => {}, analysisDa
                 <article className="quiz-question-card">
                   <div className="quiz-question-top">
                     <div className="quiz-chip-group">
-                      <span className="quiz-chip-left">🔍 Question {overallQuestionNumber} of {totalQuestions}</span>
+                      <span className="quiz-chip-left" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                        <Search size={14} />
+                        <span>Question {overallQuestionNumber} of {totalQuestions}</span>
+                      </span>
                       <span className="quiz-chip-points">1 pts</span>
                     </div>
                     <span className="quiz-chip-right">● {currentSectionName}</span>
